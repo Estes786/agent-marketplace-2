@@ -9,13 +9,25 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { path: '/', icon: '🏪', label: 'Marketplace', sub: 'Agent Hub' },
-  { path: '/dashboard', icon: '⚡', label: 'Command Center', sub: 'Pod Control' },
-  { path: '/web3', icon: '🔗', label: 'Web3 Layer', sub: 'DID + Wallet' },
-  { path: '/architect', icon: '🏗️', label: 'Architect v2', sub: 'Web4 Design' },
-  { path: '/media-lab', icon: '🎬', label: 'Media Lab', sub: 'Content AI' },
-  { path: '/roadmap', icon: '🗺️', label: 'Roadmap', sub: 'Web3→Web5' },
+  { path: '/', icon: '🏪', label: 'Marketplace', sub: 'Agent Hub', group: 'core' },
+  { path: '/dashboard', icon: '⚡', label: 'Command Center', sub: 'Pod Control', group: 'core' },
+  { path: '/architect', icon: '🏗️', label: 'Architect v3', sub: 'Web5 Design', group: 'core' },
+  // Web3 section
+  { path: '/tokenomics', icon: '🌿', label: 'Tokenomics', sub: 'HYPHA Engine', group: 'web3' },
+  { path: '/dapps', icon: '🔗', label: 'DApps Hub', sub: 'DeFi + Protocols', group: 'web3' },
+  { path: '/dao', icon: '🏛️', label: 'DAO Governance', sub: 'vHYPHA Voting', group: 'web3' },
+  { path: '/identity', icon: '🪪', label: 'Web3 Identity', sub: 'DID + Web3Auth', group: 'web3' },
+  { path: '/web3', icon: '🌐', label: 'Web3 Panel', sub: 'Stack Overview', group: 'web3' },
+  // Content
+  { path: '/media-lab', icon: '🎬', label: 'Media Lab', sub: 'Content AI', group: 'content' },
+  { path: '/roadmap', icon: '🗺️', label: 'Roadmap', sub: 'Web3→Web5', group: 'content' },
 ];
+
+const groupLabels: Record<string, string> = {
+  core: '🧠 Core Platform',
+  web3: '⛓️ Web3 Ecosystem',
+  content: '🎨 Content & Vision'
+};
 
 const Sidebar: React.FC<SidebarProps> = ({ deployedCount, isOpen, setIsOpen }) => {
   const navigate = useNavigate();
@@ -25,12 +37,12 @@ const Sidebar: React.FC<SidebarProps> = ({ deployedCount, isOpen, setIsOpen }) =
       {/* Logo */}
       <div className="p-6 border-b border-slate-900/60">
         <button onClick={() => { navigate('/'); setIsOpen(false); }} className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-lg shadow-lg shadow-indigo-600/30 group-hover:scale-110 transition-transform">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-lg shadow-lg shadow-indigo-600/30 group-hover:scale-110 transition-transform">
             🧬
           </div>
           <div>
             <div className="font-black text-white text-sm tracking-tighter">GANI HYPHA</div>
-            <div className="text-[8px] font-mono text-indigo-400 uppercase tracking-widest">v2.0 Web4</div>
+            <div className="text-[8px] font-mono text-indigo-400 uppercase tracking-widest">v3.0 Web3 Master</div>
           </div>
         </button>
       </div>
@@ -39,13 +51,15 @@ const Sidebar: React.FC<SidebarProps> = ({ deployedCount, isOpen, setIsOpen }) =
       <div className="px-4 py-3 border-b border-slate-900/60">
         <div className="grid grid-cols-2 gap-1.5">
           {[
-            { label: 'Cloudflare', status: true, color: 'text-orange-400' },
-            { label: 'Groq', status: true, color: 'text-purple-400' },
-            { label: 'Supabase', status: true, color: 'text-emerald-400' },
-            { label: 'CrewAI', status: true, color: 'text-yellow-400' },
+            { label: 'Alchemy', color: 'text-blue-400' },
+            { label: 'Groq', color: 'text-purple-400' },
+            { label: 'Supabase', color: 'text-emerald-400' },
+            { label: 'The Graph', color: 'text-pink-400' },
+            { label: 'Infura', color: 'text-orange-400' },
+            { label: 'Pinata', color: 'text-yellow-400' },
           ].map(s => (
             <div key={s.label} className="flex items-center gap-1.5 bg-slate-900/40 px-2 py-1 rounded-lg">
-              <div className={`w-1 h-1 rounded-full ${s.status ? 'bg-emerald-500 animate-pulse' : 'bg-slate-600'}`}></div>
+              <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div>
               <span className={`text-[8px] font-black uppercase tracking-tighter ${s.color}`}>{s.label}</span>
             </div>
           ))}
@@ -54,62 +68,66 @@ const Sidebar: React.FC<SidebarProps> = ({ deployedCount, isOpen, setIsOpen }) =
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-hide">
-        {navItems.map(item => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            onClick={() => setIsOpen(false)}
-            className={({ isActive }) =>
-              `flex items-center gap-4 px-4 py-3 rounded-2xl transition-all group relative ${
-                isActive
-                  ? 'bg-indigo-600/10 border border-indigo-500/30 text-white'
-                  : 'text-slate-500 hover:text-slate-300 hover:bg-slate-900/40 border border-transparent'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-indigo-500 rounded-r-full"></div>}
-                <span className="text-xl">{item.icon}</span>
-                <div>
-                  <div className="text-[11px] font-black uppercase tracking-widest">{item.label}</div>
-                  <div className="text-[8px] font-mono text-slate-700 uppercase">{item.sub}</div>
-                </div>
-                {item.path === '/dashboard' && deployedCount > 0 && (
-                  <span className="ml-auto bg-indigo-500/20 text-indigo-400 text-[8px] font-black px-1.5 py-0.5 rounded border border-indigo-500/20">
-                    {deployedCount}
-                  </span>
+        {['core', 'web3', 'content'].map(group => (
+          <div key={group} className="mb-3">
+            <p className="text-[8px] font-black text-slate-700 uppercase tracking-widest mb-2 px-2">{groupLabels[group]}</p>
+            {navItems.filter(i => i.group === group).map(item => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative mb-0.5 ${
+                    isActive
+                      ? 'bg-indigo-600/10 border border-indigo-500/30 text-white'
+                      : 'text-slate-500 hover:text-slate-300 hover:bg-slate-900/40 border border-transparent'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-indigo-500 rounded-r-full"></div>}
+                    <span className="text-base">{item.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[10px] font-black uppercase tracking-widest truncate">{item.label}</div>
+                      <div className="text-[8px] font-mono text-slate-700 uppercase">{item.sub}</div>
+                    </div>
+                    {item.path === '/dashboard' && deployedCount > 0 && (
+                      <span className="bg-indigo-500/20 text-indigo-400 text-[8px] font-black px-1.5 py-0.5 rounded border border-indigo-500/20">
+                        {deployedCount}
+                      </span>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          </NavLink>
+              </NavLink>
+            ))}
+          </div>
         ))}
       </nav>
 
       {/* Footer */}
       <div className="p-4 border-t border-slate-900/60 space-y-3">
-        <div className="bg-slate-900/40 rounded-2xl p-4 border border-slate-800/60">
+        <div className="bg-slate-900/40 rounded-2xl p-3 border border-slate-800/60">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Mesh Status</span>
+            <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Web3 Stack Health</span>
           </div>
           <div className="space-y-1">
-            <div className="flex justify-between text-[8px] font-mono">
-              <span className="text-slate-600">CF Workers</span>
-              <span className="text-emerald-400">ONLINE</span>
-            </div>
-            <div className="flex justify-between text-[8px] font-mono">
-              <span className="text-slate-600">Groq API</span>
-              <span className="text-emerald-400">ACTIVE</span>
-            </div>
-            <div className="flex justify-between text-[8px] font-mono">
-              <span className="text-slate-600">Supabase</span>
-              <span className="text-emerald-400">CONNECTED</span>
-            </div>
+            {[
+              { label: 'Alchemy RPC', status: 'ONLINE', color: 'text-emerald-400' },
+              { label: 'Groq API', status: 'ACTIVE', color: 'text-purple-400' },
+              { label: 'The Graph', status: 'SYNCED', color: 'text-pink-400' },
+              { label: 'Cloudflare', status: 'DEPLOYED', color: 'text-orange-400' }
+            ].map(s => (
+              <div key={s.label} className="flex justify-between text-[8px] font-mono">
+                <span className="text-slate-600">{s.label}</span>
+                <span className={s.color}>{s.status}</span>
+              </div>
+            ))}
           </div>
         </div>
         <div className="text-center text-[7px] font-black text-slate-800 uppercase tracking-widest">
-          Akar Dalam, Cabang Tinggi
+          Akar Dalam, Cabang Tinggi · Gyss!
         </div>
       </div>
     </div>

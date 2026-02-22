@@ -1,5 +1,10 @@
 
-import { Blueprint, AgentRole } from './types';
+// ============================================================
+// GANI HYPHA - MASTER WEB3 CONSTANTS v3.0
+// Full Tokenomics, DApps, DeFi Protocols
+// ============================================================
+
+import { Blueprint, AgentRole, HYPHATokenomics, DeFiProtocol, DAppProject, Web3Provider } from './types';
 
 export const BLUEPRINTS: Blueprint[] = [
   {
@@ -146,7 +151,7 @@ export const BLUEPRINTS: Blueprint[] = [
       'Automated Asset Synthesizer',
       'Performance Analytics Roots',
       'LangChain Campaign Orchestrator',
-      'IPFS Content Archiving',
+      'IPFS Content Archiving (Pinata)',
       'NFT Content Monetization Layer'
     ],
     icon: '📸',
@@ -216,7 +221,8 @@ export const BLUEPRINTS: Blueprint[] = [
       walletRequired: true,
       tokenStandard: 'ERC-20',
       deFiEnabled: true,
-      zkProofEnabled: true
+      zkProofEnabled: true,
+      crossChainBridge: ['Arbitrum', 'Optimism', 'Base']
     },
     web4Features: {
       aiOrchestrator: 'CrewAI',
@@ -242,7 +248,7 @@ export const BLUEPRINTS: Blueprint[] = [
       'Supabase Financial Ledger'
     ],
     icon: '📈',
-    roles: [AgentRole.ANALYST, AgentRole.ORCHESTRATOR, AgentRole.ARCHIVIST, AgentRole.INNOVATOR],
+    roles: [AgentRole.ANALYST, AgentRole.ORCHESTRATOR, AgentRole.ARCHIVIST, AgentRole.INNOVATOR, AgentRole.TOKENOMIST],
     price: '$199/mo',
     tier: 'Pro',
     infrastructure: 'Cloud Pod',
@@ -286,7 +292,7 @@ export const BLUEPRINTS: Blueprint[] = [
       'ZK Proof Verification System'
     ],
     icon: '⚖️',
-    roles: [AgentRole.GATEKEEPER, AgentRole.ARCHIVIST, AgentRole.ORCHESTRATOR, AgentRole.ANALYST],
+    roles: [AgentRole.GATEKEEPER, AgentRole.ARCHIVIST, AgentRole.ORCHESTRATOR, AgentRole.ANALYST, AgentRole.DAO_GOVERNOR],
     price: '$299/mo',
     tier: 'Enterprise',
     infrastructure: 'Hybrid Nexus',
@@ -326,10 +332,10 @@ export const BLUEPRINTS: Blueprint[] = [
       'Smart Contract Risk Scanner',
       'Groq AI DeFi Advisor',
       'LangChain DeFi Research Agent',
-      'Real-time Gas Optimizer'
+      'Real-time Gas Optimizer (Infura)'
     ],
     icon: '🔗',
-    roles: [AgentRole.ANALYST, AgentRole.ORCHESTRATOR, AgentRole.INNOVATOR, AgentRole.GATEKEEPER],
+    roles: [AgentRole.ANALYST, AgentRole.ORCHESTRATOR, AgentRole.INNOVATOR, AgentRole.GATEKEEPER, AgentRole.DEFI_WIZARD],
     price: '$0/mo',
     tier: 'Free',
     infrastructure: 'Edge Worker',
@@ -351,7 +357,8 @@ export const BLUEPRINTS: Blueprint[] = [
       walletRequired: true,
       tokenStandard: 'ERC-20',
       deFiEnabled: true,
-      zkProofEnabled: true
+      zkProofEnabled: true,
+      crossChainBridge: ['Arbitrum', 'Base', 'Optimism', 'Polygon']
     },
     web4Features: {
       aiOrchestrator: 'Groq',
@@ -360,8 +367,361 @@ export const BLUEPRINTS: Blueprint[] = [
       decentralizedStorage: false,
       realTimeAdaptation: true
     }
+  },
+  {
+    id: 'hypha-dao-sovereign',
+    name: 'HYPHA DAO Sovereign',
+    industry: 'DAO & Governance',
+    description: 'Full DAO governance system with on-chain voting, treasury management, and tokenomics control. vHYPHA-powered quadratic voting, proposal lifecycle automation, and multi-sig treasury.',
+    features: [
+      'vHYPHA Quadratic Voting Engine',
+      'On-Chain Proposal Lifecycle Automation',
+      'Multi-Sig Treasury Management',
+      'Tokenomics Parameter Controller',
+      'Staking Vault with Dynamic APY',
+      'Snapshot Integration for Off-Chain Voting',
+      'Delegated Governance Power',
+      'DAO Analytics Dashboard'
+    ],
+    icon: '🏛️',
+    roles: [AgentRole.DAO_GOVERNOR, AgentRole.ORCHESTRATOR, AgentRole.GATEKEEPER, AgentRole.TOKENOMIST],
+    price: '$299/mo',
+    tier: 'Enterprise',
+    infrastructure: 'Hybrid Nexus',
+    isFeatured: true,
+    deploymentCount: 38,
+    reviews: [
+      { id: 'r8', userName: 'DAOmaster', rating: 5, comment: 'Best DAO toolkit I have used. Gyss!', date: '2026-02-01' }
+    ],
+    cognitiveSpecs: {
+      reasoningDepth: 90,
+      memoryPersistence: 'Recursive',
+      thinkingBudget: 32768,
+      sovereigntyLevel: 100,
+      economicAutonomy: true
+    },
+    web3Integration: {
+      blockchain: 'Ethereum',
+      walletRequired: true,
+      tokenStandard: 'HYPHA',
+      deFiEnabled: true,
+      zkProofEnabled: true
+    },
+    web4Features: {
+      aiOrchestrator: 'Multi-Agent',
+      autonomyLevel: 100,
+      crossChainEnabled: true,
+      decentralizedStorage: true,
+      realTimeAdaptation: true
+    }
   }
 ];
+
+// ============================================================
+// HYPHA TOKENOMICS ENGINE
+// ============================================================
+export const HYPHA_TOKENOMICS: HYPHATokenomics = {
+  totalSupply: 1_000_000_000,
+  circulatingSupply: 342_000_000,
+  marketCap: 68_400_000,
+  price: 0.2,
+  priceChange24h: 8.34,
+  volume24h: 4_200_000,
+  holders: 24_891,
+  stakingAPY: 18.5,
+  burnRate: 0.5,
+  mintRate: 2.0,
+  distribution: [
+    { category: 'Community & Ecosystem', percentage: 35, amount: 350_000_000, vestingMonths: 48, cliffMonths: 6, color: '#6366f1' },
+    { category: 'Team & Advisors', percentage: 20, amount: 200_000_000, vestingMonths: 36, cliffMonths: 12, color: '#8b5cf6' },
+    { category: 'Treasury & DAO', percentage: 20, amount: 200_000_000, vestingMonths: 60, cliffMonths: 0, color: '#06b6d4' },
+    { category: 'Public Sale', percentage: 15, amount: 150_000_000, vestingMonths: 12, cliffMonths: 3, color: '#10b981' },
+    { category: 'Private Sale / Seed', percentage: 7, amount: 70_000_000, vestingMonths: 24, cliffMonths: 6, color: '#f59e0b' },
+    { category: 'Liquidity Provision', percentage: 3, amount: 30_000_000, vestingMonths: 0, cliffMonths: 0, color: '#ef4444' }
+  ],
+  vestingSchedule: [
+    { category: 'Team', totalTokens: 200_000_000, released: 0, locked: 200_000_000, nextUnlock: '2026-08-01', unlockAmount: 5_555_556 },
+    { category: 'Community', totalTokens: 350_000_000, released: 43_750_000, locked: 306_250_000, nextUnlock: '2026-03-01', unlockAmount: 7_291_667 },
+    { category: 'Treasury', totalTokens: 200_000_000, released: 100_000_000, locked: 100_000_000, nextUnlock: '2026-03-01', unlockAmount: 3_333_333 },
+    { category: 'Seed Round', totalTokens: 70_000_000, released: 17_500_000, locked: 52_500_000, nextUnlock: '2026-03-01', unlockAmount: 2_916_667 }
+  ],
+  emissions: [
+    { epoch: 1, year: 2024, emissionRate: 5.0, totalEmitted: 50_000_000, inflationRate: 5.0 },
+    { epoch: 2, year: 2025, emissionRate: 3.5, totalEmitted: 85_000_000, inflationRate: 3.5 },
+    { epoch: 3, year: 2026, emissionRate: 2.0, totalEmitted: 105_000_000, inflationRate: 2.0 },
+    { epoch: 4, year: 2027, emissionRate: 1.0, totalEmitted: 115_000_000, inflationRate: 1.0 },
+    { epoch: 5, year: 2028, emissionRate: 0.5, totalEmitted: 120_000_000, inflationRate: 0.5 }
+  ]
+};
+
+// ============================================================
+// DEFI PROTOCOLS REGISTRY
+// ============================================================
+export const DEFI_PROTOCOLS: DeFiProtocol[] = [
+  {
+    id: 'uniswap-v4',
+    name: 'Uniswap V4',
+    type: 'DEX',
+    chain: 'Ethereum',
+    tvl: 4_200_000_000,
+    apy: 8.5,
+    risk: 'Low',
+    contractAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    logo: '🦄',
+    isIntegrated: true
+  },
+  {
+    id: 'curve-finance',
+    name: 'Curve Finance',
+    type: 'DEX',
+    chain: 'Ethereum',
+    tvl: 2_100_000_000,
+    apy: 6.2,
+    risk: 'Low',
+    contractAddress: '0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7',
+    logo: '〰️',
+    isIntegrated: true
+  },
+  {
+    id: 'aave-v3',
+    name: 'Aave V3',
+    type: 'Lending',
+    chain: 'Ethereum',
+    tvl: 8_500_000_000,
+    apy: 4.8,
+    risk: 'Low',
+    contractAddress: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+    logo: '👻',
+    isIntegrated: true
+  },
+  {
+    id: 'lido-staking',
+    name: 'Lido Finance',
+    type: 'Liquid Staking',
+    chain: 'Ethereum',
+    tvl: 15_000_000_000,
+    apy: 4.2,
+    risk: 'Low',
+    contractAddress: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
+    logo: '🪴',
+    isIntegrated: true
+  },
+  {
+    id: 'convex-finance',
+    name: 'Convex Finance',
+    type: 'Yield',
+    chain: 'Ethereum',
+    tvl: 900_000_000,
+    apy: 12.4,
+    risk: 'Medium',
+    logo: '🔷',
+    isIntegrated: false
+  },
+  {
+    id: 'radiant-capital',
+    name: 'Radiant Capital',
+    type: 'Lending',
+    chain: 'Arbitrum',
+    tvl: 420_000_000,
+    apy: 9.8,
+    risk: 'Medium',
+    logo: '⚡',
+    isIntegrated: true
+  },
+  {
+    id: 'gmx-perps',
+    name: 'GMX Perpetuals',
+    type: 'Perps',
+    chain: 'Arbitrum',
+    tvl: 650_000_000,
+    apy: 15.2,
+    risk: 'High',
+    logo: '🏦',
+    isIntegrated: false
+  },
+  {
+    id: 'hypha-pool',
+    name: 'HYPHA Staking Pool',
+    type: 'Staking',
+    chain: 'Ethereum',
+    tvl: 24_000_000,
+    apy: 18.5,
+    risk: 'Medium',
+    contractAddress: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+    logo: '🌿',
+    isIntegrated: true
+  }
+];
+
+// ============================================================
+// DAPPS REGISTRY
+// ============================================================
+export const DAPPS: DAppProject[] = [
+  {
+    id: 'uniswap',
+    name: 'Uniswap',
+    category: 'DEX',
+    description: 'Leading AMM DEX on Ethereum, pioneering concentrated liquidity with V3/V4',
+    chain: ['Ethereum', 'Polygon', 'Arbitrum', 'Optimism', 'Base'],
+    users: 4_200_000,
+    tvl: 4_200_000_000,
+    token: 'UNI',
+    status: 'Live',
+    rating: 9.8,
+    integrationLevel: 'Full',
+    logo: '🦄'
+  },
+  {
+    id: 'opensea',
+    name: 'OpenSea',
+    category: 'NFT',
+    description: 'World\'s largest NFT marketplace for digital collectibles and art',
+    chain: ['Ethereum', 'Polygon', 'Solana'],
+    users: 2_100_000,
+    tvl: 0,
+    token: 'N/A',
+    status: 'Live',
+    rating: 8.2,
+    integrationLevel: 'Partial',
+    logo: '🌊'
+  },
+  {
+    id: 'aave',
+    name: 'Aave',
+    category: 'Infrastructure',
+    description: 'Decentralized lending protocol with flash loans and aTokens',
+    chain: ['Ethereum', 'Polygon', 'Arbitrum', 'Optimism'],
+    users: 890_000,
+    tvl: 8_500_000_000,
+    token: 'AAVE',
+    status: 'Live',
+    rating: 9.5,
+    integrationLevel: 'Full',
+    logo: '👻'
+  },
+  {
+    id: 'compound',
+    name: 'Compound V3',
+    category: 'Infrastructure',
+    description: 'Algorithmic money market protocol for lending and borrowing',
+    chain: ['Ethereum', 'Base', 'Arbitrum'],
+    users: 420_000,
+    tvl: 3_100_000_000,
+    token: 'COMP',
+    status: 'Live',
+    rating: 8.8,
+    integrationLevel: 'Planned',
+    logo: '🏛️'
+  },
+  {
+    id: 'snapshot',
+    name: 'Snapshot',
+    category: 'DAO',
+    description: 'Decentralized governance platform for off-chain voting with on-chain signatures',
+    chain: ['Ethereum', 'Polygon'],
+    users: 1_500_000,
+    token: 'N/A',
+    status: 'Live',
+    rating: 9.0,
+    integrationLevel: 'Full',
+    logo: '📸'
+  },
+  {
+    id: 'chainlink',
+    name: 'Chainlink',
+    category: 'Infrastructure',
+    description: 'Decentralized oracle network providing real-world data to smart contracts',
+    chain: ['Ethereum', 'Polygon', 'BNB', 'Arbitrum'],
+    users: 3_000_000,
+    tvl: 0,
+    token: 'LINK',
+    status: 'Live',
+    rating: 9.9,
+    integrationLevel: 'Full',
+    logo: '🔗'
+  },
+  {
+    id: 'thegraph',
+    name: 'The Graph',
+    category: 'Infrastructure',
+    description: 'Decentralized indexing protocol for querying blockchain data via GraphQL',
+    chain: ['Ethereum', 'Arbitrum', 'Polygon'],
+    users: 180_000,
+    token: 'GRT',
+    status: 'Live',
+    rating: 9.3,
+    integrationLevel: 'Full',
+    logo: '📊'
+  },
+  {
+    id: 'ipfs-pinata',
+    name: 'IPFS + Pinata',
+    category: 'Infrastructure',
+    description: 'Decentralized file storage system with Pinata pinning service for persistence',
+    chain: ['All'],
+    users: 500_000,
+    status: 'Live',
+    rating: 8.9,
+    integrationLevel: 'Full',
+    logo: '📌'
+  }
+];
+
+// ============================================================
+// WEB3 PROVIDERS REGISTRY
+// ============================================================
+export const WEB3_PROVIDERS: Web3Provider[] = [
+  {
+    name: 'Alchemy',
+    rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/TOHei2xGaHxbHUneplEnx-biKQBtdOAq',
+    chain: 'Ethereum Mainnet',
+    isActive: true,
+    latency: 45
+  },
+  {
+    name: 'Infura',
+    rpcUrl: 'https://mainnet.infura.io/v3/db90dda7224646728278a7996456f4fc',
+    chain: 'Ethereum Mainnet',
+    isActive: true,
+    latency: 62
+  },
+  {
+    name: 'Ankr',
+    rpcUrl: 'https://rpc.ankr.com/eth/a57665476c766860859628cb6a86b81985847674397716c9fdac8b3ce0fb1b19',
+    chain: 'Ethereum Mainnet',
+    isActive: true,
+    latency: 38
+  },
+  {
+    name: 'Chainstack',
+    rpcUrl: 'https://nd-xxx.chainstack.com',
+    chain: 'Ethereum Mainnet',
+    isActive: false,
+    latency: 55
+  }
+];
+
+// ============================================================
+// DAO GOVERNANCE CONFIG
+// ============================================================
+export const DAO_CONFIG = {
+  name: 'HYPHA DAO',
+  token: 'vHYPHA',
+  votingToken: 'vHYPHA',
+  quorumPercent: 10,
+  passingThreshold: 51,
+  votingPeriodDays: 7,
+  timelockHours: 48,
+  proposalThreshold: 100000,
+  contractAddress: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+  treasury: {
+    address: '0xDAOTreasury...',
+    hyphaBalance: 28_500_000,
+    ethBalance: 142.8,
+    usdcBalance: 1_850_000,
+    totalValueUSD: 9_320_000
+  }
+};
 
 export const PHILOSOPHY = {
   vision: "Optimization of Life through Integrated Intelligence",
@@ -371,17 +731,81 @@ export const PHILOSOPHY = {
 };
 
 export const WEB3_STACK = {
-  blockchain: ["Ethereum", "Solana", "Polygon", "Cloudflare Workers"],
-  storage: ["IPFS", "Supabase", "Cloudflare R2", "Arweave"],
-  identity: ["DID (W3C)", "ENS", "Web5 DWN"],
-  ai: ["Groq (llama-3.3-70b)", "Cloudflare AI (Llama 3)", "LangChain", "CrewAI"],
-  monitoring: ["LangSmith", "Cloudflare Analytics"],
-  protocol: ["Web3 Foundation", "Web4 Autonomous Agents", "Web5 DWN/DID"]
+  blockchain: ["Ethereum", "Solana", "Polygon", "Arbitrum", "Base", "Cloudflare Workers"],
+  storage: ["IPFS (Pinata)", "Supabase", "Cloudflare R2", "Arweave", "The Graph"],
+  identity: ["DID (W3C)", "ENS", "Web3Auth", "Privy", "Web5 DWN"],
+  oracles: ["Chainlink", "The Graph", "Pyth Network"],
+  ai: ["Groq (llama-3.3-70b)", "Cloudflare AI", "LangChain", "CrewAI"],
+  monitoring: ["LangSmith", "Cloudflare Analytics", "Alchemy Webhooks"],
+  rpc: ["Alchemy", "Infura", "Ankr", "Chainstack"],
+  protocol: ["Web3", "Web4 Autonomous Agents", "Web5 DWN/DID", "EIP-4337 (Account Abstraction)"]
 };
 
 export const GROQ_MODELS = [
-  { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', contextWindow: 128000, speed: 'Ultra-Fast' },
-  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant', contextWindow: 128000, speed: 'Ultra-Fast' },
-  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B', contextWindow: 32768, speed: 'Fast' },
-  { id: 'gemma2-9b-it', name: 'Gemma2 9B', contextWindow: 8192, speed: 'Fast' }
+  { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', contextWindow: 128000, speed: 'Ultra-Fast' as const },
+  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant', contextWindow: 128000, speed: 'Ultra-Fast' as const },
+  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B', contextWindow: 32768, speed: 'Fast' as const },
+  { id: 'gemma2-9b-it', name: 'Gemma2 9B', contextWindow: 8192, speed: 'Fast' as const }
 ];
+
+// ============================================================
+// CHAIN CONFIGURATION
+// ============================================================
+export const CHAINS = {
+  ethereum: {
+    id: 1,
+    name: 'Ethereum Mainnet',
+    symbol: 'ETH',
+    rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/',
+    explorer: 'https://etherscan.io',
+    color: '#627EEA',
+    logo: '⟠'
+  },
+  polygon: {
+    id: 137,
+    name: 'Polygon PoS',
+    symbol: 'MATIC',
+    rpcUrl: 'https://polygon-mainnet.g.alchemy.com/v2/',
+    explorer: 'https://polygonscan.com',
+    color: '#8247E5',
+    logo: '⬡'
+  },
+  arbitrum: {
+    id: 42161,
+    name: 'Arbitrum One',
+    symbol: 'ETH',
+    rpcUrl: 'https://arb-mainnet.g.alchemy.com/v2/',
+    explorer: 'https://arbiscan.io',
+    color: '#12AAFF',
+    logo: '🔵'
+  },
+  base: {
+    id: 8453,
+    name: 'Base',
+    symbol: 'ETH',
+    rpcUrl: 'https://base-mainnet.g.alchemy.com/v2/',
+    explorer: 'https://basescan.org',
+    color: '#0052FF',
+    logo: '🔷'
+  }
+};
+
+// The Graph API endpoint
+export const THE_GRAPH_CONFIG = {
+  apiKey: 'server_4bd29f3eac7a006b8c74060b3b69f223',
+  uniswapSubgraph: 'https://gateway.thegraph.com/api/server_4bd29f3eac7a006b8c74060b3b69f223/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV',
+  aaveSubgraph: 'https://gateway.thegraph.com/api/server_4bd29f3eac7a006b8c74060b3b69f223/subgraphs/id/JCNWRypm7FYwV8fx166MhnZSgBpbrNgFB5rACxLH1RtS'
+};
+
+// Pinata IPFS Config
+export const PINATA_CONFIG = {
+  apiKey: import.meta.env.VITE_PINATA_API_KEY || '',
+  gateway: 'https://gateway.pinata.cloud/ipfs/'
+};
+
+// Web3Auth Config
+export const WEB3AUTH_CONFIG = {
+  clientId: 'BOZCV1IcmP48NVzBWqRX-HIt3JSjI8dekj-6Ygj9zercthRb0wX_fTESDc2Knbf1z-I_5PlIXPHrqAM58KD7q0M',
+  network: 'mainnet' as const,
+  jwksEndpoint: 'https://api-auth.web3auth.io/.well-known/jwks.json'
+};

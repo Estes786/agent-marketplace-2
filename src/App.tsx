@@ -13,6 +13,10 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import GaniAssistant from './components/GaniAssistant';
 import Web3Panel from './components/Web3Panel';
+import Tokenomics from './components/Tokenomics';
+import DAppsHub from './components/DAppsHub';
+import DAOGovernance from './components/DAOGovernance';
+import Web3Identity from './components/Web3Identity';
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +25,7 @@ const App: React.FC = () => {
   const [userStats, setUserStats] = useState<UserStats>({
     hyphaBalance: 2500,
     usdBalance: 1500,
+    ethBalance: 0.42,
     totalYield: 0,
     activeNodes: 0,
     transactions: [],
@@ -28,7 +33,11 @@ const App: React.FC = () => {
     stakedAmount: 0,
     governancePower: 0,
     reputationScore: 98.4,
-    epochRewards: 0
+    epochRewards: 0,
+    liquidityPositions: [],
+    yieldStrategies: [],
+    nftHoldings: 0,
+    web3AuthConnected: false
   });
   const [isGaniOpen, setIsGaniOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -54,28 +63,49 @@ const App: React.FC = () => {
         }
         return eco;
       }));
+
+      // Simulate epoch rewards for stakers
+      if (userStats.stakedAmount > 0) {
+        setUserStats(prev => ({
+          ...prev,
+          epochRewards: prev.epochRewards + (prev.stakedAmount * 0.185 / 365 / 24 / 12) // every 5 seconds
+        }));
+      }
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [userStats.stakedAmount]);
 
   const handleConnectWallet = () => {
     if (userStats.isWalletConnected) return;
-    const fakeAddress = `0x${Math.random().toString(16).substring(2, 10)}...${Math.random().toString(16).substring(2, 6)}`;
+    const entropy = Math.random().toString(16).substring(2);
+    const fakeAddress = `0x${entropy.substring(0, 4)}...${entropy.substring(4, 8)}`;
+    const fullAddress = `0x742d35Cc6634C0532925a3b844Bc${entropy.substring(0, 6)}`;
     setUserStats(prev => ({
       ...prev,
       isWalletConnected: true,
-      walletAddress: fakeAddress,
+      walletAddress: fullAddress,
       governancePower: 120,
       web3Wallet: {
-        address: fakeAddress,
+        address: fullAddress,
         network: 'Ethereum',
         balance: 1.24,
         nftCount: 3,
-        isVerified: true
+        isVerified: true,
+        ensName: 'gani.hypha.eth'
       },
-      didDocument: `did:hypha:${Math.random().toString(36).substring(2, 15)}`
+      didDocument: `did:ethr:mainnet:${fullAddress}`
     }));
     setIsGaniOpen(true);
+  };
+
+  const handleDisconnectWallet = () => {
+    setUserStats(prev => ({
+      ...prev,
+      isWalletConnected: false,
+      walletAddress: undefined,
+      web3Wallet: undefined,
+      didDocument: undefined
+    }));
   };
 
   const handleClaimYield = (amount: number) => {
@@ -91,7 +121,9 @@ const App: React.FC = () => {
           currency: 'HYPHA',
           timestamp: new Date(),
           description: 'Autonomous Yield Harvest',
-          txHash: `0x${Math.random().toString(16).substring(2, 12)}`
+          txHash: `0x${Math.random().toString(16).substring(2, 12)}`,
+          chain: 'Ethereum',
+          status: 'Confirmed'
         },
         ...prev.transactions
       ]
@@ -115,7 +147,9 @@ const App: React.FC = () => {
           amount: cost,
           currency: 'HYPHA',
           timestamp: new Date(),
-          description: `Subscription: ${blueprint.name}`
+          description: `Subscription: ${blueprint.name}`,
+          chain: 'Cloudflare',
+          status: 'Confirmed'
         },
         ...prev.transactions
       ]
@@ -129,7 +163,7 @@ const App: React.FC = () => {
       ...prev,
       hyphaBalance: prev.hyphaBalance - amount,
       stakedAmount: prev.stakedAmount + amount,
-      governancePower: prev.governancePower + (amount * 1.2),
+      governancePower: Math.floor(prev.governancePower + (amount * 1.2)),
       epochRewards: prev.epochRewards + (amount * 0.185 / 365),
       transactions: [
         {
@@ -138,8 +172,10 @@ const App: React.FC = () => {
           amount,
           currency: 'HYPHA',
           timestamp: new Date(),
-          description: 'HYPHA Staking → vHYPHA',
-          txHash: `0x${Math.random().toString(16).substring(2, 12)}`
+          description: `Stake ${amount} HYPHA → vHYPHA`,
+          txHash: `0x${Math.random().toString(16).substring(2, 12)}`,
+          chain: 'Ethereum',
+          status: 'Confirmed'
         },
         ...prev.transactions
       ]
@@ -152,7 +188,7 @@ const App: React.FC = () => {
       ...prev,
       hyphaBalance: prev.hyphaBalance + amount,
       stakedAmount: prev.stakedAmount - amount,
-      governancePower: Math.max(0, prev.governancePower - (amount * 1.2)),
+      governancePower: Math.max(0, Math.floor(prev.governancePower - (amount * 1.2))),
       transactions: [
         {
           id: `ust-${Date.now()}`,
@@ -160,8 +196,10 @@ const App: React.FC = () => {
           amount,
           currency: 'HYPHA',
           timestamp: new Date(),
-          description: 'HYPHA Unstaking',
-          txHash: `0x${Math.random().toString(16).substring(2, 12)}`
+          description: `Unstake ${amount} HYPHA`,
+          txHash: `0x${Math.random().toString(16).substring(2, 12)}`,
+          chain: 'Ethereum',
+          status: 'Pending'
         },
         ...prev.transactions
       ]
@@ -174,6 +212,7 @@ const App: React.FC = () => {
       b.id === blueprint.id ? { ...b, deploymentCount: b.deploymentCount + 1 } : b
     ));
 
+    const txHash = `0x${Math.random().toString(16).substring(2, 20)}`;
     const newEcosystem: DeployedEcosystem = {
       id: Math.random().toString(36).substr(2, 9).toUpperCase(),
       blueprintId: blueprint.id,
@@ -181,14 +220,19 @@ const App: React.FC = () => {
       status: 'Syncing',
       deployedAt: new Date().toISOString(),
       logs: [
-        `[INIT] Hypha Engine Master v2.0 initializing... Gyss!`,
-        `[WEB3] DID identity minted: did:hypha:${Math.random().toString(36).substring(2, 10)}`,
-        `[GROQ] Connecting to llama-3.3-70b API... ${Math.floor(Math.random() * 200 + 100)}ms`,
-        `[SUPABASE] Database connection established. RLS policies active.`,
-        `[LANGCHAIN] Workflow orchestrator initialized.`,
-        `[CREWAI] Multi-agent crew spawned: ${blueprint.roles.length} agents`,
-        `[CF-WORKERS] Edge deployment to ${Math.floor(Math.random() * 200 + 100)} PoPs`,
-        `[WEB4] Autonomous Protocol v4.0 activating...`
+        `[INIT] HYPHA Master Engine v3.0 initializing... Gyss!`,
+        `[WEB3] DID identity minted: did:ethr:mainnet:0x${Math.random().toString(16).substring(2, 10)}`,
+        `[ALCHEMY] Connecting to Ethereum via Alchemy RPC... ✓ Block #${Math.floor(Math.random() * 100000 + 19000000)}`,
+        `[GROQ] Connecting to llama-3.3-70b API... ${Math.floor(Math.random() * 200 + 100)}ms latency`,
+        `[SUPABASE] Database connection established. RLS policies active. Gyss!`,
+        `[LANGCHAIN] Workflow orchestrator initialized. Tracing via LangSmith.`,
+        `[CREWAI] Multi-agent crew spawned: ${blueprint.roles.length} agents active`,
+        `[IPFS] Pinata pinning blueprint to IPFS... CID: Qm${Math.random().toString(36).substring(2, 18)}`,
+        `[THE_GRAPH] Indexing protocol data from subgraph...`,
+        `[CF-WORKERS] Edge deployment to ${Math.floor(Math.random() * 200 + 100)} PoPs worldwide`,
+        `[WEB4] Autonomous Protocol v4.0 activating...`,
+        `[TOKENOMICS] Economic autonomy module ${blueprint.cognitiveSpecs?.economicAutonomy ? 'ENABLED' : 'standby'}`,
+        `[TX] Deployment transaction: ${txHash.substring(0, 20)}...`
       ],
       metrics: {
         computeUsage: '0ms',
@@ -198,15 +242,13 @@ const App: React.FC = () => {
         autonomousIncome: 0,
         yieldRate: blueprint.tier === 'Enterprise' ? 12.5 : blueprint.tier === 'Pro' ? 4.2 : 0.5,
         dwnSyncStatus: 0,
-        verifiableCredentials: Math.floor(Math.random() * 5),
+        verifiableCredentials: Math.floor(Math.random() * 5 + 1),
         groqCallsPerHour: 0,
         supabaseConnected: true,
         langchainWorkflows: 0
       },
-      didHash: `did:hypha:0x${Math.random().toString(16).substring(2, 10)}`,
-      blockchainTxHash: blueprint.web3Integration?.walletRequired 
-        ? `0x${Math.random().toString(16).substring(2, 20)}`
-        : undefined
+      didHash: `did:ethr:mainnet:0x${Math.random().toString(16).substring(2, 10)}`,
+      blockchainTxHash: txHash
     };
 
     setDeployedEcosystems(prev => [...prev, newEcosystem]);
@@ -217,16 +259,18 @@ const App: React.FC = () => {
       setDeployedEcosystems(prev =>
         prev.map(e => e.id === newEcosystem.id ? {
           ...e,
-          status: 'Active',
+          status: blueprint.cognitiveSpecs?.sovereigntyLevel && blueprint.cognitiveSpecs.sovereigntyLevel >= 95 ? 'Sovereign' : 'Active',
           logs: [...e.logs,
-            `[SUCCESS] Pod '${newEcosystem.name}' is now AUTONOMOUS!`,
+            `[SUCCESS] 🚀 Pod '${newEcosystem.name}' is now LIVE & AUTONOMOUS!`,
             `[METRICS] Node health: 100% | Groq latency: ${Math.floor(Math.random() * 200 + 50)}ms`,
-            `[WEB3] DID verified on-chain. Sovereignty level: ${blueprint.cognitiveSpecs?.sovereigntyLevel || 75}%`
+            `[WEB3] DID verified on-chain | Sovereignty: ${blueprint.cognitiveSpecs?.sovereigntyLevel || 75}%`,
+            `[YIELD] Income stream active: ${blueprint.tier === 'Enterprise' ? 12.5 : blueprint.tier === 'Pro' ? 4.2 : 0.5}% /hour`,
+            `[GYSS] Akar Dalam, Cabang Tinggi! Autonomous operations confirmed.`
           ],
           metrics: {
             ...e.metrics,
             nodeHealth: 100,
-            dwnSyncStatus: 100,
+            dwnSyncStatus: 98,
             computeUsage: `${Math.floor(Math.random() * 15 + 5)}ms`,
             a2aActivity: `${Math.floor(Math.random() * 500 + 200)}/h`,
             stateSize: `${Math.floor(Math.random() * 500 + 200)}KB`
@@ -264,7 +308,7 @@ const App: React.FC = () => {
           reputationScore={userStats.reputationScore}
         />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 scrollbar-hide pb-24 lg:pb-8 custom-scrollbar">
+        <main className="flex-1 overflow-y-auto scrollbar-hide pb-24 lg:pb-8 custom-scrollbar">
           <Routes>
             <Route path="/" element={
               <Marketplace
@@ -290,6 +334,33 @@ const App: React.FC = () => {
             <Route path="/media-lab" element={<MediaLab />} />
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/web3" element={<Web3Panel userStats={userStats} onConnectWallet={handleConnectWallet} />} />
+            <Route path="/tokenomics" element={
+              <Tokenomics
+                hyphaBalance={userStats.hyphaBalance}
+                stakedAmount={userStats.stakedAmount}
+                governancePower={userStats.governancePower}
+              />
+            } />
+            <Route path="/dapps" element={
+              <DAppsHub
+                hyphaBalance={userStats.hyphaBalance}
+                ethBalance={userStats.ethBalance}
+              />
+            } />
+            <Route path="/dao" element={
+              <DAOGovernance
+                userStats={userStats}
+                onStake={handleStake}
+                onUnstake={handleUnstake}
+              />
+            } />
+            <Route path="/identity" element={
+              <Web3Identity
+                userStats={userStats}
+                onConnectWallet={handleConnectWallet}
+                onDisconnect={handleDisconnectWallet}
+              />
+            } />
           </Routes>
         </main>
 
